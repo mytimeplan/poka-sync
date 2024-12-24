@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: poka-sync-microservice
+
+restTemplate:
+  connectionTimeout: 60000
+  readTimeout: 60000
