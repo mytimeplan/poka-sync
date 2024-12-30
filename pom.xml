@@ -17,6 +17,7 @@
     <properties>
         <java.version>21</java.version>
         <lombok.version>1.18.36</lombok.version>
+        <gson.version>2.11.0</gson.version>
     </properties>
 
     <packaging>war</packaging>
@@ -31,6 +32,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
