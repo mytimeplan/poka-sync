@@ -53,6 +53,10 @@ public class SkillService extends PokaService<PokaSkillResponseDto> {
         }
     }
 
+    protected List<Long> getSkillIds() throws DefaultException {
+        return getSkills().stream().map(MtpSkillDto::getExternalId).toList();
+    }
+
     @Override
     protected boolean isCorrectResponse(ResponseEntity<PokaSkillResponseDto> response) {
         return super.isCorrectResponse(response) && response.getBody().getCount() != 0;
