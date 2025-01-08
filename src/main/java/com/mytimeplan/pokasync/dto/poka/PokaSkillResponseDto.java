@@ -12,10 +12,7 @@ import java.util.regex.Pattern;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PokaSkillResponseDto {
-    private int count;
-    @JsonProperty("results")
-    private List<Skill> skills;
+public class PokaSkillResponseDto extends PokaResultDto<PokaSkillResponseDto.Skill> {
 
     @Getter
     @Setter
