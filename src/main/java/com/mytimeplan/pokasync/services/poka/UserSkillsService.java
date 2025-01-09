@@ -5,13 +5,8 @@ import com.mytimeplan.pokasync.dto.mtp.MtpUserSkillsDto;
 import com.mytimeplan.pokasync.dto.poka.PokaUserSkillResponseDto;
 import com.mytimeplan.pokasync.exceptions.DefaultException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -61,19 +56,6 @@ public class UserSkillsService extends PokaService<PokaUserSkillResponseDto> {
             url = getUri(pokaUsersSkillsResponse.getNextUrl());
         } while (url != null && StringUtils.hasText(url.toString()));
         return result;
-    }
-
-    protected PokaUserSkillResponseDto sendRequest(URI url) throws DefaultException {
-        HttpHeaders headers = getHeaders();
-        try {
-            ResponseEntity<PokaUserSkillResponseDto> pokaUserResponse = restTemplate.exchange(
-                    url, HttpMethod.GET, new HttpEntity<>(headers), PokaUserSkillResponseDto.class);
-            if (!isCorrectResponse(pokaUserResponse)) throw new DefaultException("Incorrect response");
-            return pokaUserResponse.getBody();
-        } catch (HttpClientErrorException.Forbidden ex) {
-            log.error("Forbidden error when getting users skills from POKA. Check token in settings. URL:[{}] HEADERS:[{}]", url, GSON.toJson(headers), ex);
-            return null;
-        }
     }
 
     private static boolean isCorrectEndorsement(PokaUserSkillResponseDto.UserSkill userSkill) {
