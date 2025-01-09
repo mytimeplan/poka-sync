@@ -24,7 +24,7 @@ public class UserService extends PokaService<PokaUserResponseDto> {
     private static final int LIMIT_OBJECTS = 50;
 
     public UserService(RestTemplate restTemplate) {
-        super(restTemplate);
+        super(restTemplate, PokaUserResponseDto.class);
     }
 
     public List<MtpUserDto> getUsers() throws DefaultException {

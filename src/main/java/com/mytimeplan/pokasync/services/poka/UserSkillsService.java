@@ -31,7 +31,7 @@ public class UserSkillsService extends PokaService<PokaUserSkillResponseDto> {
     private static Date actualDate = new Date();
 
     public UserSkillsService(RestTemplate restTemplate, UserService userService, SkillService skillService) {
-        super(restTemplate);
+        super(restTemplate, PokaUserSkillResponseDto.class);
         this.userService = userService;
         this.skillService = skillService;
     }
@@ -63,7 +63,7 @@ public class UserSkillsService extends PokaService<PokaUserSkillResponseDto> {
         return result;
     }
 
-    private PokaUserSkillResponseDto sendRequest(URI url) throws DefaultException {
+    protected PokaUserSkillResponseDto sendRequest(URI url) throws DefaultException {
         HttpHeaders headers = getHeaders();
         try {
             ResponseEntity<PokaUserSkillResponseDto> pokaUserResponse = restTemplate.exchange(

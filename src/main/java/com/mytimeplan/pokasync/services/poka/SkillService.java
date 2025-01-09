@@ -20,7 +20,7 @@ public class SkillService extends PokaService<PokaSkillResponseDto> {
     private static final int LIMIT_OBJECTS = 20;
 
     public SkillService(RestTemplate restTemplate) {
-        super(restTemplate);
+        super(restTemplate, PokaSkillResponseDto.class);
     }
 
     public List<MtpSkillDto> getSkills() throws DefaultException {
