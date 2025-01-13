@@ -35,9 +35,8 @@ public class SkillService extends PokaService<PokaSkillResponseDto> {
         }
 
         return pokaSkills.stream()
-                .filter(skill -> skill.getCategory() != null)
+                .filter(skill -> skill.getCategory() != null && StringUtils.hasText(skill.getCategory().getUnitPosition()))
                 .map(MtpSkillDto::new)
-                .filter(mtpSkill -> StringUtils.hasText(mtpSkill.getUnitPosition()))
                 .collect(Collectors.toList());
     }
 
