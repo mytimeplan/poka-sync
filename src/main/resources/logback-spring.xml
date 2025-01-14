@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>poka-sync-service %d{HH:mm:ss.SSS} [%-10.10thread] %-5level %logger{5} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="GELF" class="de.appelgriepsch.logback.GelfAppender">
+        <server>graylog.mytimeplan.com</server>
+        <port>12201</port>
+        <hostName>graylog.mytimeplan.com</hostName>
+        <protocol>TCP</protocol>
+        <includeSource>true</includeSource>
+        <includeMDC>true</includeMDC>
+        <queueSize>512</queueSize>
+        <connectTimeout>1000</connectTimeout>
+        <reconnectDelay>500</reconnectDelay>
+        <additionalFields>applicationType=poka_sync,appName=poka_sync</additionalFields>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- Max queue size of logs which is waiting to be sent (When it reach to the max size, the log will be disappeared). -->
+        <queueSize>256</queueSize>
+        <!-- Never block when the queue becomes full. -->
+        <neverBlock>true</neverBlock>
+        <!-- The default maximum queue flush time allowed during appender stop.If the worker takes longer than this time it will exit, discarding any remaining items in the queue. -->
+        <maxFlushTime>10000</maxFlushTime>
+        <appender-ref ref="GELF"/>
+    </appender>
+
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>appName</key>
+            <defaultValue>poka_sync</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>/var/log/poka_sync_app.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <fileNamePattern>/var/log/poka_sync-service/%d{yyyy-MM-dd HH}%i.log</fileNamePattern>
+                    <maxFileSize>5MB</maxFileSize>
+                    <maxHistory>600</maxHistory>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>%d{HH:mm:ss.SSS} [%-10.10thread] %-5level %logger{35} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC"/>
+        <appender-ref ref="SIFT"/>
+    </root>
+
+    <logger name="com.mytimeplan" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC"/>
+        <appender-ref ref="SIFT"/>
+    </logger>
+
+</configuration>
