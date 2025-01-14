@@ -1,6 +1,6 @@
 spring:
   application:
-    name: poka-sync-microservice
+    name: poka-sync
 
 server:
   port: 8090
@@ -12,3 +12,8 @@ restTemplate:
 poka:
   url: https://alcoa-fjardaal.poka.io/api/v2.3
   token: ApiKey pak|5193876e6ef8a81f0329fbe21178a609
+
+graylog:
+  host: graylog.mytimeplan.com
+  port: 12201
+  hostName: graylog.mytimeplan.com
